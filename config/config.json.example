@@ -1,0 +1,9 @@
+{
+    "Instagram": {
+        "collection_id": ""
+    },
+    "WhatsApp": {
+        "token": "",
+        "to": ""
+    }
+}
