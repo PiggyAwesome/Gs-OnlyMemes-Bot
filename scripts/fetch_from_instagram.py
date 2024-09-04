@@ -26,11 +26,11 @@ def extractUrl(req) -> list[str]:
                         + ","
                         + "video"
                         + ","
-                        + str(carousel_item["video_versions"][0]["width"])
+                        + str(carousel_item["video_versions"][-1]["width"])
                         + ","
-                        + str(carousel_item["video_versions"][0]["height"])
+                        + str(carousel_item["video_versions"][-1]["height"])
                         + ","
-                        + carousel_item["video_versions"][0]["url"]
+                        + carousel_item["video_versions"][-1]["url"]
                     )
                 # Check if the carousel item is an image
                 elif "image_versions2" in carousel_item:
@@ -40,14 +40,14 @@ def extractUrl(req) -> list[str]:
                         + "image"
                         + ","
                         + str(
-                            carousel_item["image_versions2"]["candidates"][0]["width"]
+                            carousel_item["image_versions2"]["candidates"][-1]["width"]
                         )
                         + ","
                         + str(
-                            carousel_item["image_versions2"]["candidates"][0]["height"]
+                            carousel_item["image_versions2"]["candidates"][-1]["height"]
                         )
                         + ","
-                        + carousel_item["image_versions2"]["candidates"][0]["url"]
+                        + carousel_item["image_versions2"]["candidates"][-1]["url"]
                     )
                 else:
                     raise Exception("?")
@@ -58,11 +58,11 @@ def extractUrl(req) -> list[str]:
                 + ","
                 + "video"
                 + ","
-                + str(item["media"]["video_versions"][0]["width"])
+                + str(item["media"]["video_versions"][-1]["width"])
                 + ","
-                + str(item["media"]["video_versions"][0]["height"])
+                + str(item["media"]["video_versions"][-1]["height"])
                 + ","
-                + item["media"]["video_versions"][0]["url"]
+                + item["media"]["video_versions"][-1]["url"]
             )
         # Check if the media item is an image
         elif "image_versions2" in item["media"]:
@@ -71,11 +71,11 @@ def extractUrl(req) -> list[str]:
                 + ","
                 + "image"
                 + ","
-                + str(item["media"]["image_versions2"]["candidates"][0]["width"])
+                + str(item["media"]["image_versions2"]["candidates"][-1]["width"])
                 + ","
-                + str(item["media"]["image_versions2"]["candidates"][0]["height"])
+                + str(item["media"]["image_versions2"]["candidates"][-1]["height"])
                 + ","
-                + item["media"]["image_versions2"]["candidates"][0]["url"]
+                + item["media"]["image_versions2"]["candidates"][-1]["url"]
             )
         else:
             raise Exception("?")
