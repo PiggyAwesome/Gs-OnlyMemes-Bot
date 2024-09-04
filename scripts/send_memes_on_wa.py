@@ -7,10 +7,9 @@ logging.basicConfig(level=logging.INFO)
 
 with open("config/config.json", "r") as f:
     config = json.load(f)
-    
+
 token = config["WhatsApp"]["token"]
 to = config["WhatsApp"]["to"]
-
 
 
 async def main(
@@ -20,7 +19,7 @@ async def main(
 
     failed = []
     i = 1
-    for id, url, media_type, width, height in reader:
+    for id, media_type, width, height, url in reader:
         logging.info(f"{media_type} | ID: {id}")
 
         if id in sent_video_ids:  # video has already been sent in the past
@@ -52,7 +51,6 @@ async def main(
 
         i += 1
 
-
     if failed:
         logging.critical(f"The following messages have failed: {failed}")
 
@@ -66,5 +64,3 @@ if __name__ == "__main__":
         csv_data = list(reader)
 
     asyncio.run(main(sent_video_ids, csv_data, to, token))
-
-

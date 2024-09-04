@@ -11,6 +11,7 @@ collection_id = config["Instagram"]["collection_id"]
 with open("config/headers.py", "r") as f:
     headers = eval(f.read())
 
+
 # Function to extract URLs of media items from the response JSON
 def extractUrl(req) -> list[str]:
     final = []
@@ -23,20 +24,18 @@ def extractUrl(req) -> list[str]:
                     final.append(
                         carousel_item["id"]
                         + ","
-                        + carousel_item["video_versions"][0]["url"]
-                        + ","
                         + "video"
                         + ","
                         + str(carousel_item["video_versions"][0]["width"])
                         + ","
                         + str(carousel_item["video_versions"][0]["height"])
+                        + ","
+                        + carousel_item["video_versions"][0]["url"]
                     )
                 # Check if the carousel item is an image
                 elif "image_versions2" in carousel_item:
                     final.append(
                         carousel_item["id"]
-                        + ","
-                        + carousel_item["image_versions2"]["candidates"][0]["url"]
                         + ","
                         + "image"
                         + ","
@@ -47,6 +46,8 @@ def extractUrl(req) -> list[str]:
                         + str(
                             carousel_item["image_versions2"]["candidates"][0]["height"]
                         )
+                        + ","
+                        + carousel_item["image_versions2"]["candidates"][0]["url"]
                     )
                 else:
                     raise Exception("?")
@@ -55,26 +56,26 @@ def extractUrl(req) -> list[str]:
             final.append(
                 item["media"]["id"]
                 + ","
-                + item["media"]["video_versions"][0]["url"]
-                + ","
                 + "video"
                 + ","
                 + str(item["media"]["video_versions"][0]["width"])
                 + ","
                 + str(item["media"]["video_versions"][0]["height"])
+                + ","
+                + item["media"]["video_versions"][0]["url"]
             )
         # Check if the media item is an image
         elif "image_versions2" in item["media"]:
             final.append(
                 item["media"]["id"]
                 + ","
-                + item["media"]["image_versions2"]["candidates"][0]["url"]
-                + ","
                 + "image"
                 + ","
                 + str(item["media"]["image_versions2"]["candidates"][0]["width"])
                 + ","
                 + str(item["media"]["image_versions2"]["candidates"][0]["height"])
+                + ","
+                + item["media"]["image_versions2"]["candidates"][0]["url"]
             )
         else:
             raise Exception("?")

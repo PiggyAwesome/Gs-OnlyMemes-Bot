@@ -5,7 +5,7 @@ import httpx
 class WHAPI:
     def __init__(self, token: str) -> None:
         self.token = token
-        self.requests_session = httpx.Client(timeout=40)
+        self.requests_session = httpx.Client(timeout=100)
 
     async def getChannels(self, count, offset):
         """Sends a GET request to retrieve channels with pagination."""
