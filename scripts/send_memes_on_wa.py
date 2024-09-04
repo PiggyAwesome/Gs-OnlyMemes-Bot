@@ -2,6 +2,7 @@ import csv
 import logging, asyncio, typing
 from whapi_wrapper import WHAPI
 import json
+import urllib.parse
 
 logging.basicConfig(level=logging.INFO)
 
@@ -10,6 +11,15 @@ with open("config/config.json", "r") as f:
 
 token = config["WhatsApp"]["token"]
 to = config["WhatsApp"]["to"]
+
+mime_type_lookup = {
+    "jpg": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "png": "image/png",
+    "gif": "image/gif",
+    "mp4": "video/mp4",
+    # Add more file extensions and their corresponding mime types as needed
+}
 
 
 async def main(
@@ -35,6 +45,10 @@ async def main(
             caption=(
                 "." if i % 4 == 0 else ""
             ),  # this will add a "." on every fourth meme to evade whatsapp's grouping
+            mime_type=mime_type_lookup.get(
+                url.split("?")[0].split(".")[-1],
+                "",
+            ), # try to extract mime type from file extension
         )
         logging.info(resp.status_code)  #
 
@@ -53,6 +67,7 @@ async def main(
 
     if failed:
         logging.critical(f"The following messages have failed: {failed}")
+
 
 
 if __name__ == "__main__":

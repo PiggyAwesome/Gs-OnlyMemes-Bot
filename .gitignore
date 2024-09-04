@@ -3,3 +3,4 @@ config/headers.py
 data/insta_memes.csv
 data/sent_video_ids.txt
 __pycache__
+test.py

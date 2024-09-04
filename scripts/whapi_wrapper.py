@@ -27,6 +27,7 @@ class WHAPI:
         width: int,
         height: int,
         caption: str,
+        mime_type: str
     ):
         """
         Sends a POST request to the Whapi API to send a WhatsApp message with media.
@@ -40,6 +41,7 @@ class WHAPI:
                 "caption": caption,
                 "width": width,
                 "height": height,
+                "mime_type":mime_type
             },
             headers={
                 "accept": "application/json",
