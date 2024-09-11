@@ -40,14 +40,14 @@ def extractUrl(req) -> list[str]:
                         + "image"
                         + ","
                         + str(
-                            carousel_item["image_versions2"]["candidates"][-1]["width"]
+                            carousel_item["image_versions2"]["candidates"][0]["width"]
                         )
                         + ","
                         + str(
-                            carousel_item["image_versions2"]["candidates"][-1]["height"]
+                            carousel_item["image_versions2"]["candidates"][0]["height"]
                         )
                         + ","
-                        + carousel_item["image_versions2"]["candidates"][-1]["url"]
+                        + carousel_item["image_versions2"]["candidates"][0]["url"]
                     )
                 else:
                     raise Exception("?")
@@ -71,11 +71,11 @@ def extractUrl(req) -> list[str]:
                 + ","
                 + "image"
                 + ","
-                + str(item["media"]["image_versions2"]["candidates"][-1]["width"])
+                + str(item["media"]["image_versions2"]["candidates"][0]["width"])
                 + ","
-                + str(item["media"]["image_versions2"]["candidates"][-1]["height"])
+                + str(item["media"]["image_versions2"]["candidates"][0]["height"])
                 + ","
-                + item["media"]["image_versions2"]["candidates"][-1]["url"]
+                + item["media"]["image_versions2"]["candidates"][0]["url"]
             )
         else:
             raise Exception("?")
