@@ -12,8 +12,10 @@ with open("config/headers.py", "r") as f:
     headers = eval(f.read())
 
 
-# Function to extract URLs of media items from the response JSON
+
+
 def extractUrl(req) -> list[str]:
+    # Function to extract URLs of media items from the response JSON
     final = []
     for item in req["items"]:
         # Check if the media item is part of a carousel

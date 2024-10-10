@@ -3,6 +3,7 @@ import logging, asyncio, typing
 from whapi_wrapper import WHAPI
 import json
 import urllib.parse
+from insta_wrapper import InstagramScraper
 
 logging.basicConfig(level=logging.INFO)
 
@@ -26,6 +27,7 @@ async def main(
     sent_video_ids: typing.List[str], reader: typing.List[str], to: str, token: str
 ) -> None:
     whapi = WHAPI(token=token)
+    instascraper = InstagramScraper()
 
     failed = []
     i = 1
@@ -35,7 +37,7 @@ async def main(
         if id in sent_video_ids:  # video has already been sent in the past
             logging.info(f"Video has already been sent in the past | ID: {id}")
             continue  # continue, do not increment counter
-
+        top_comment = instascraper.fetch_top_comment(pk=id.split("_")[0])
         resp = await whapi.sendMessage(
             to=to,
             media=url,
@@ -43,12 +45,12 @@ async def main(
             width=int(width),
             height=int(height),
             caption=(
-                "." if i % 4 == 0 else ""
+                top_comment if top_comment else ("." if i % 4 == 0 else "")
             ),  # this will add a "." on every fourth meme to evade whatsapp's grouping
             mime_type=mime_type_lookup.get(
                 url.split("?")[0].split(".")[-1],
                 "",
-            ), # try to extract mime type from file extension
+            ),  # try to extract mime type from file extension
         )
         logging.info(resp.status_code)  #
 
@@ -67,7 +69,6 @@ async def main(
 
     if failed:
         logging.critical(f"The following messages have failed: {failed}")
-
 
 
 if __name__ == "__main__":
