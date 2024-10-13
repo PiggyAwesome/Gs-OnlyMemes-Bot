@@ -30,14 +30,23 @@ async def main(
     instascraper = InstagramScraper()
 
     failed = []
-    i = 1
+    i = 0
     for id, media_type, width, height, url in reader:
         logging.info(f"{media_type} | ID: {id}")
 
         if id in sent_video_ids:  # video has already been sent in the past
             logging.info(f"Video has already been sent in the past | ID: {id}")
-            continue  # continue, do not increment counter
+            continue
+        
+        # Fetch top comment for the given media ID
         top_comment = instascraper.fetch_top_comment(pk=id.split("_")[0])
+
+        # If there is no top comment, keep track of number of consecutive caption-less memes
+        if not top_comment:
+            i += 1
+        else:
+            i = 0  # reset counter when a captioned meme is encountered
+
         resp = await whapi.sendMessage(
             to=to,
             media=url,
@@ -46,7 +55,7 @@ async def main(
             height=int(height),
             caption=(
                 top_comment if top_comment else ("." if i % 4 == 0 else "")
-            ),  # this will add a "." on every fourth meme to evade whatsapp's grouping
+            ),  # this will add a "." on every fourth consecutive captionless meme to evade whatsapp's grouping
             mime_type=mime_type_lookup.get(
                 url.split("?")[0].split(".")[-1],
                 "",
@@ -65,7 +74,6 @@ async def main(
             logging.info(resp.json())
             failed.append(resp)
 
-        i += 1
 
     if failed:
         logging.critical(f"The following messages have failed: {failed}")
