@@ -1,9 +1,12 @@
 import requests
 
+
 class InstagramScraper:
     def __init__(self):
         with open("config/headers.py", "r") as f:
             self.headers = eval(f.read())
+        with open("config/blacklisted_words.txt", "r") as f:
+            self.blacklisted_words = f.read().splitlines()
 
     def fetch_top_comment(self, pk):
         comments = []
@@ -13,4 +16,15 @@ class InstagramScraper:
         ).json()
         for comment_obj in comments_req["comments"]:
             comments.append((comment_obj["comment_like_count"], comment_obj["text"]))
-        return max(comments, key=lambda x: x[0])[1] if comments else ""
+
+        comments.sort(reverse=True)  # Sort comments by likes in descending order
+
+        if not comments:  # if there is no comments
+            return ""
+
+        for comment in comments:
+            top_comment = comment[1]
+            if not any(
+                word.lower() in top_comment.lower() for word in self.blacklisted_words
+            ):  # if comment does not contain blacklisted words
+                break
