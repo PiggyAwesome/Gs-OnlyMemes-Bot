@@ -28,3 +28,4 @@ class InstagramScraper:
                 word.lower() in top_comment.lower() for word in self.blacklisted_words
             ):  # if comment does not contain blacklisted words
                 break
+        return top_comment
